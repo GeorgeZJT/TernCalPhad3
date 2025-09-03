@@ -1,13 +1,11 @@
-import matplotlib.pyplot as plt
+"""
+The plot utils module contains some useful routines related to plotting.
+"""
+
 import matplotlib.patches as mpatches
 import numpy as np
-import time
-import os
-from pycalphad import Database, ternplot
-from pycalphad import variables as v
 
-
-def custom_legend(foo):
+def phase_legend(phases):
     """
     Build matplotlib handles for the plot legend.
 
@@ -26,7 +24,7 @@ def custom_legend(foo):
     --------
     >>> legend_handles, colors = phase_legend(['FCC_A1', 'BCC_A2', 'LIQUID'])
     """
-    phases = list(db_al_cu_y.phases.keys())
+    
     colorlist = {}
     # colors from HU1SUN, August 5 2018, ordered by igorjrd, issue #97
     # exclude green and red because of their special meaning on the diagram
@@ -49,31 +47,8 @@ def custom_legend(foo):
         phasecount = phasecount + 1
     return legend_handles, colorlist
 
-db_al_cu_y = Database('Al_Cu_Y_assessment_files.TDB')
-comps = ['AL', 'CU', 'Y', 'VA']
-phases = list(db_al_cu_y.phases.keys())
-output_dir = 'output_images'
-# os.makedirs(output_dir, exist_ok=True)
-
-temperature = 500
-
-conds = {v.T: temperature, v.P:101325, v.X('AL'): (0,1,0.015), v.X('Y'): (0,1,0.015)}
-
-
-# Set higher DPI for the figure
-plt.rcParams['figure.dpi'] = 300
-start_time = time.time()
-ax = ternplot(db_al_cu_y, comps, phases, conds, x=v.X('AL'), y=v.X('Y'), label_nodes = True, legend_generator = custom_legend)
-end_time = time.time()
-print(f"Elapsed time for T = {temperature}: {end_time - start_time:.3f} seconds")
-
-ax.title.set_text(f'Al-Cu-Y T={temperature}K')
-handles, labels = ax.get_legend_handles_labels()
-
-# plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300)
-plt.savefig(f'T={temperature}.png', dpi = 300)
-plt.show()
-
-
-
-
+if __name__ == "__main__":
+    phases = ['a', 'b', 'c', 'd']
+    handles, colors = phase_legend(phases)
+    print(handles)
+    print(colors)
