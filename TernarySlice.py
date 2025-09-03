@@ -67,8 +67,11 @@ ax = ternplot(db_al_cu_y, comps, phases, conds, x=v.X('AL'), y=v.X('Y'), label_n
 end_time = time.time()
 print(f"Elapsed time for T = {temperature}: {end_time - start_time:.3f} seconds")
 
-ax.title.set_text(f'Al-Cu-Y T={temperature}K')
-handles, labels = ax.get_legend_handles_labels()
+ax.patch.set_facecolor('black')
+ax.set_title('')
+ax.axis('off')
+ax.get_legend().remove()
+ax.grid(False)
 
 # plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300)
 plt.savefig(f'T={temperature}.png', dpi = 300)
