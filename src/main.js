@@ -6,7 +6,7 @@ import { createBox } from './objects/SpinningBox.js';
 import GUI from 'lil-gui';
 import { createAxes } from '../../threejs/src/objects/AxesXYZ.js';
 import { loadImageStack } from './objects/loadTernarySlices.js';
-import { initVRControls } from './controllers.js';
+import { initVRControls, updateVRControls } from './controllers.js';
 import { initSlicePlanes } from './objects/slicePlane.js';
 
 let scene, camera, renderer, controls, clock;
@@ -114,6 +114,8 @@ function render(time, xrFrame) {
 
     if (!isInVR) {
         controls.update();
+    } else {
+        updateVRControls(delta, world);
     }
 
     renderer.render(scene, camera);
