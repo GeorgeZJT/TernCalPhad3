@@ -53,10 +53,10 @@ def custom_legend(foo):
 db_al_cu_y = Database('Al_Cu_Y_assessment_files.TDB')
 comps = ['AL', 'CU', 'Y', 'VA']
 phases = list(db_al_cu_y.phases.keys())
-output_dir = 'output_images_2'
+output_dir = 'output_images_3'
 os.makedirs(output_dir, exist_ok=True)
 
-temperature_range = range(930, 1800, 10)
+temperature_range = range(500, 1800, 10)
 
 for temperature in temperature_range:
     conds = {v.T: temperature, v.P:101325, v.X('AL'): (0,1,0.015), v.X('Y'): (0,1,0.015)}
@@ -94,7 +94,7 @@ for temperature in temperature_range:
 
     fig.set_size_inches(12, 12)
 
-    plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300)
+    plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300, transparent=True)
     # plt.savefig(f'T={temperature}.png', dpi = 300)
     # plt.show()
     plt.close(fig)

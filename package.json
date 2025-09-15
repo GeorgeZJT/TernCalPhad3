@@ -1,0 +1,30 @@
+{
+  "name": "terncalphad3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeZJT/TernCalPhad3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeorgeZJT/TernCalPhad3/issues"
+  },
+  "homepage": "https://github.com/GeorgeZJT/TernCalPhad3#readme",
+  "description": "",
+  "dependencies": {
+    "three": "^0.180.0",
+    "vite": "^7.1.5",
+    "vite-plugin-mkcert": "^1.17.8"
+  },
+  "devDependencies": {
+    "lil-gui": "^0.20.0"
+  }
+}
