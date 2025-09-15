@@ -49,33 +49,55 @@ def custom_legend(foo):
         phasecount = phasecount + 1
     return legend_handles, colorlist
 
+
 db_al_cu_y = Database('Al_Cu_Y_assessment_files.TDB')
 comps = ['AL', 'CU', 'Y', 'VA']
 phases = list(db_al_cu_y.phases.keys())
-output_dir = 'output_images'
-# os.makedirs(output_dir, exist_ok=True)
+output_dir = 'output_images_2'
+os.makedirs(output_dir, exist_ok=True)
 
-temperature = 500
+temperature_range = range(930, 1800, 10)
 
-conds = {v.T: temperature, v.P:101325, v.X('AL'): (0,1,0.015), v.X('Y'): (0,1,0.015)}
+for temperature in temperature_range:
+    conds = {v.T: temperature, v.P:101325, v.X('AL'): (0,1,0.015), v.X('Y'): (0,1,0.015)}
+
+    fig, ax = plt.subplots(subplot_kw={'projection': 'triangular'}, figsize=(12,12))
+
+    start_time = time.time()
+    ax = ternplot(db_al_cu_y, comps, phases, conds, x=v.X('AL'), y=v.X('Y'), label_nodes = True, ax = ax, legend_generator = custom_legend)
+    end_time = time.time()
+    print(f"Elapsed time for T = {temperature}: {end_time - start_time:.3f} seconds")
 
 
-# Set higher DPI for the figure
-plt.rcParams['figure.dpi'] = 300
-start_time = time.time()
-ax = ternplot(db_al_cu_y, comps, phases, conds, x=v.X('AL'), y=v.X('Y'), label_nodes = True, legend_generator = custom_legend)
-end_time = time.time()
-print(f"Elapsed time for T = {temperature}: {end_time - start_time:.3f} seconds")
+    fig.patch.set_facecolor('black')
+    ax.patch.set_facecolor('black')
+    ax.set_title('')
+    ax.get_legend().remove()
+    ax.grid(False)
 
-ax.patch.set_facecolor('black')
-ax.set_title('')
-ax.axis('off')
-ax.get_legend().remove()
-ax.grid(False)
+    if temperature == 500:
+        ax.xaxis.label.set_text(f'X(AL)')
+        ax.yaxis.label.set_text(f'X(Y)')
+        ax.xaxis.label.set_color('white')
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='y', colors='white')
+    elif temperature % 100 == 0:
+        ax.xaxis.label.set_text(f'T = {temperature}K')
+        ax.yaxis.label.set_text(f'T = {temperature}K')
+        ax.xaxis.label.set_color('white')
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='y', colors='white')
+    else:
+        ax.axis('off')
 
-# plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300)
-plt.savefig(f'T={temperature}.png', dpi = 300)
-plt.show()
+    fig.set_size_inches(12, 12)
+
+    plt.savefig(os.path.join(output_dir, f'T={temperature}.png'), dpi=300)
+    # plt.savefig(f'T={temperature}.png', dpi = 300)
+    # plt.show()
+    plt.close(fig)
 
 
 
